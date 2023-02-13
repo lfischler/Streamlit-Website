@@ -19,18 +19,23 @@ epc_mean_df = pd.read_csv('epc_grouped_2012-22.csv', index_col='Postcode')
 
 
 # %%
-postcode = st.text_input('Postcode (case sensitive)', '')
+postcode = st.text_input('Postcode (case sensitive)', ''.strip())
 
-simd_percentile_score = round((simd_df.loc[postcode, 'SIMD2020v2_Rank']
-                               / simd_df['SIMD2020v2_Rank'].max()*100))
-epc_score = round(epc_mean_df.loc[postcode,
-                  'average_energy_efficiency_rating'])
-risk_score = round(((float(simd_percentile_score) + float(epc_score))/2))
+if postcode in simd_df.index:
+    simd_percentile_score = round((simd_df.loc[postcode, 'SIMD2020v2_Rank']
+                                / simd_df['SIMD2020v2_Rank'].max()*100))
+    epc_score = round(epc_mean_df.loc[postcode,
+                    'average_energy_efficiency_rating'])
+    risk_score = round(((float(simd_percentile_score) + float(epc_score))/2))
 
 # %%
 
+
 if st.button('Submit'):
-    if (postcode in simd_df.index):
+    if postcode == '' or postcode == ' ':
+        st.markdown('Please enter a postcode.')
+
+    if postcode in simd_df.index:
         st.markdown('## Postcode Overview')
 
         col1, col2, col3 = st.columns(3)
