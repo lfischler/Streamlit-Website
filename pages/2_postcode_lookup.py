@@ -1,6 +1,7 @@
 # %%
 import streamlit as st
 import pandas as pd
+import os
 
 more_smid = ('https://www.gov.scot/collections/scottish-index-of-multiple-'
              'deprivation-2020/')
@@ -13,8 +14,8 @@ st.markdown('This tool allows practitioners and community members to quickly'
 
 
 # %%
-simd_df = pd.read_csv('postcode_simd.csv', index_col='Postcode')
-epc_mean_df = pd.read_csv('epc_grouped_2012-22.csv', index_col='Postcode')
+simd_df = pd.read_csv(os.path.join('data', 'postcode_simd.csv'), index_col='Postcode')
+epc_mean_df = pd.read_csv(os.path.join('data', 'epc_grouped_2012-22.csv'), index_col='Postcode')
 
 
 # %%
