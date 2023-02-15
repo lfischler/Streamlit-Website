@@ -3,7 +3,7 @@ import pandas as pd
 import streamlit as st
 from streamlit_folium import st_folium
 import folium
-from folium.plugins import StripePattern
+# from folium.plugins import StripePattern
 import os
 import branca
 import numpy as np
@@ -68,7 +68,7 @@ def add_layer(geojson_data_dict, series, show, name):
                           else colorscale(rank)}
         return highlight_dict
 
-    popup = folium.GeoJsonTooltip(fields=[series.index])
+    # popup = folium.GeoJsonTooltip(fields=[series.index])
 
     return folium.GeoJson(geojson_data_dict,
                           style_function=create_style,
@@ -77,7 +77,7 @@ def add_layer(geojson_data_dict, series, show, name):
                           name=name,
                           overlay=False,
                           smooth_factor=1.0)
-                        #   tooltip=popup)
+#                         tooltip=popup)
 
 
 def load_map(postcodes_list):
