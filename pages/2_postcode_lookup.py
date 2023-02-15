@@ -9,29 +9,41 @@ more_epc = ('https://www.gov.scot/publications/energy-performance-certificates'
             '-introduction/')
 
 st.markdown('# Postcode Lookup Tool')
-st.markdown('This tool allows practitioners and community members to quickly'
+st.markdown('This tool allows practitioners and community members to quickly '
             'look up a fuel poverty risk for a specific postcode.')
 
 
 # %%
-simd_df = pd.read_csv(os.path.join('data', 'postcode_simd.csv'), index_col='Postcode')
-epc_mean_df = pd.read_csv(os.path.join('data', 'epc_grouped_2012-22.csv'), index_col='Postcode')
+simd_df = pd.read_csv(
+    os.path.join('data',
+                 'postcode_simd.csv'),
+    index_col='Postcode')
+epc_mean_df = pd.read_csv(os.path.join(
+    'data',
+    'epc_grouped_2012-22.csv'),
+    index_col='Postcode')
 
 
 # %%
-postcode = st.text_input('Postcode (case sensitive)', ''.strip())
+postcode = st.text_input('Postcode', '')
+
+postcode = 'DD2 1DL'
+postcode = postcode.strip().upper()
 
 if postcode in simd_df.index:
-    simd_percentile_score = round((simd_df.loc[postcode, 'SIMD2020v2_Rank']
-                                / simd_df['SIMD2020v2_Rank'].max()*100))
+    simd_percentile_score = round(
+        (simd_df.loc[postcode, 'SIMD2020v2_Rank']
+         / simd_df['SIMD2020v2_Rank'].max()*100))
+else:
+    simd_percentile_score = 'N/A'
 
-if postcode in epc_mean_df:
+if postcode in epc_mean_df.index:
     epc_score = round(epc_mean_df.loc[postcode,
-                    'average_energy_efficiency_rating'])
+                      'average_energy_efficiency_rating'])
     risk_score = round(((float(simd_percentile_score) + float(epc_score))/2))
 else:
-    epc_score = "N/A"
-    risk_score = "N/A"
+    epc_score = 'N/A'
+    risk_score = 'N/A'
 
 
 # %%
@@ -41,11 +53,10 @@ if st.button('Submit'):
     if postcode == '' or postcode == ' ':
         st.markdown('Please enter a postcode.')
 
-    if postcode in simd_df.index:
+    if simd_percentile_score != 'N/A':
         st.markdown('## Postcode Overview')
 
         col1, col2, col3 = st.columns(3)
-
         with col1:
             st.markdown('**Index of Multiple Deprivation score**')
             st.metric(label="Percentile",
