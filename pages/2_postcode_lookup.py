@@ -27,7 +27,7 @@ epc_mean_df = pd.read_csv(os.path.join(
 # %%
 postcode = st.text_input('Postcode', '')
 
-postcode = 'DD2 1DL'
+# postcode = 'DD2 1DL'
 postcode = postcode.strip().upper()
 
 if postcode in simd_df.index:
